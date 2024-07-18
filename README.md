@@ -120,7 +120,13 @@ apt-get install python3-venv -y
 3. Create a system service to automatically start the application whenever the VM restarts.
 4. Configure NGINX as a reverse proxy for the Flask application.
 
+![App Screenshot](./task-3/Screenshot%20(46).png) 
+![App Screenshot](./task-3/Screenshot%20(47).png)
 
+### Task-3, I try 3 to 4 times in Virtual Machine and take my reference from many website.
+final oon 18-7-2024 i delete my last VM.
+![App Screenshot](./task-3/Screenshot%20(51).png) 
+ for screenshot [click](./task-3)
 
 ## Task 4.
 
@@ -186,13 +192,16 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 - After resource deleting resource
 ![App Screenshot](./task-4/Screenshot%20(45).png)
 
+## Task 5.
+
+### CI/CD Pipeline and GitHub Actions
+#### As I work on task-3 is not completed so i am unable to work on task-5 
+- Reason: To build the github workflow and pipeline, I required the the steps, command and application should be in running state. 
 
 
 
 
-
-
-
+## Task-6
 
 ### Answer the below questions.
 
@@ -200,11 +209,13 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 
 Ans:
 
+I worked on this things but answer is just copy paste from chatgpt
+
 Setting up a VNet, Ubuntu VM in Azure, and configuring inbound ports for HTTP and HTTPS access with IP restrictions involves several steps. Here’s a detailed guide:
 
 ### Step 1: Create a Virtual Network (VNet)
 
-1. **Navigate to the Azure Portal**:
+      1. **Navigate to the Azure Portal**:
    - Open [Azure Portal](https://portal.azure.com).
 
 2. **Create a VNet**:
@@ -275,10 +286,10 @@ Setting up a VNet, Ubuntu VM in Azure, and configuring inbound ports for HTTP an
 
 ### Step 5: Verify Configuration
 
-1. **SSH into the VM**:
+   1. **SSH into the VM**:
    - Use the public IP address and your SSH key or password to connect to the VM.
 
-2. **Install Web Server (Optional)**:
+   2. **Install Web Server (Optional)**:
    - For testing, install Apache or Nginx.
      ```sh
      sudo apt update
@@ -286,19 +297,128 @@ Setting up a VNet, Ubuntu VM in Azure, and configuring inbound ports for HTTP an
      sudo apt install nginx -y     # for Nginx
      ```
 
-3. **Access VM via Browser**:
+   3. **Access VM via Browser**:
    - Open a web browser and navigate to `http://<public-ip>` or `https://<public-ip>`.
    - Ensure the page loads correctly, verifying that HTTP and HTTPS access are configured.
-
-### Summary
-
-By following these steps, you can set up a VNet, create an Ubuntu VM in Azure, and configure the necessary inbound ports for HTTP and HTTPS access, including IP restrictions to enhance security.
-
-
+----
 2. How do you configure an Azure storage account, set up an Azure File Share, and mount it on an Ubuntu VM using SSH?
 
 Ans: 
 
+ I worked on this things but answer is just copy paste from chatgpt
+
+Configuring an Azure Storage Account, setting up an Azure File Share, and mounting it on an Ubuntu VM using SSH involves several steps. Here's a detailed guide:
+
+### Step 1: Create an Azure Storage Account
+
+1. **Navigate to the Azure Portal**:
+   - Open [Azure Portal](https://portal.azure.com).
+
+2. **Create a Storage Account**:
+   - Go to "Create a resource" > "Storage" > "Storage account".
+   - Enter the necessary details:
+     - **Subscription**: Select your subscription.
+     - **Resource group**: Create a new resource group or use an existing one.
+     - **Storage account name**: Provide a unique name for your storage account.
+     - **Region**: Choose the region.
+     - **Performance**: Select "Standard" or "Premium" based on your needs.
+     - **Account kind**: Choose "StorageV2 (general-purpose v2)".
+     - **Replication**: Select the replication option (e.g., LRS, GRS).
+
+3. **Review and Create**:
+   - Review your configuration and click "Create".
+
+### Step 2: Create an Azure File Share
+
+1. **Navigate to the Storage Account**:
+   - Once the storage account is created, go to "Storage accounts" > Select your storage account.
+
+2. **Create a File Share**:
+   - Under the "File shares" section, click on "File shares" > "Add file share".
+   - Enter the necessary details:
+     - **Name**: Provide a name for your file share.
+     - **Quota**: Set the quota (optional).
+
+3. **Create the File Share**:
+   - Click "Create".
+
+### Step 3: Get the Storage Account Key
+
+1. **Access Storage Account Keys**:
+   - In the storage account, go to "Access keys" under the "Settings" section.
+
+2. **Copy the Key**:
+   - Copy one of the access keys and the storage account name. You will need these to mount the file share.
+
+### Step 4: Mount the Azure File Share on an Ubuntu VM
+
+1. **SSH into the Ubuntu VM**:
+   - Use your SSH client to connect to the Ubuntu VM:
+     ```sh
+     ssh username@public-ip-address
+     ```
+
+2. **Install CIFS Utils**:
+   - On your VM, install the CIFS utilities:
+     ```sh
+     sudo apt update
+     sudo apt install cifs-utils -y
+     ```
+
+3. **Create a Mount Point**:
+   - Create a directory where you want to mount the file share:
+     ```sh
+     sudo mkdir /mnt/yourmountpoint
+     ```
+
+4. **Mount the File Share**:
+   - Use the following command to mount the Azure File Share:
+     ```sh
+     sudo mount -t cifs //storageaccountname.file.core.windows.net/filesharename /mnt/yourmountpoint -o vers=3.0,username=storageaccountname,password=storageaccountkey,dir_mode=0777,file_mode=0777,serverino
+     ```
+   - Replace `storageaccountname`, `filesharename`, `yourmountpoint`, and `storageaccountkey` with your actual storage account name, file share name, mount point, and access key, respectively.
+
+5. **Verify the Mount**:
+   - Check if the file share is mounted successfully:
+     ```sh
+     df -h
+     ```
+
+6. **Persist the Mount (Optional)**:
+   - To make the mount persistent across reboots, add an entry to `/etc/fstab`:
+     ```sh
+     sudo nano /etc/fstab
+     ```
+   - Add the following line to the file:
+     ```sh
+     //storageaccountname.file.core.windows.net/filesharename /mnt/yourmountpoint cifs vers=3.0,username=storageaccountname,password=storageaccountkey,dir_mode=0777,file_mode=0777,serverino 0 0
+     ```
+   - Save and exit the editor (Ctrl+X, then Y, then Enter).
+-----
 3. Explain the process of using Terraform to automate the setup of Azure resources. What are the benefits and key considerations?
+
+Ans:
+
+On production i never used terraform and But i learn it and have basic understanding of it, like:
+- Install Terraform,  Set Up Your Terraform Configuration Files, Create the Main Configuration File, Initialize Terraform, Apply the Configuration.
+### Benefits of Using Terraform
+- Infrastructure as Code (IaC):
+
+- Consistency and Repeatability:
+
+- Automation:
+
+- Scalability:
+
+- Provider-Agnostic:
+
+- State Management:
+-----
+
 4. Describe how to create a GitHub workflow to automate deployment from GitHub to an Azure VM. What are the key considerations to ensure it functions correctly and securely?
+ 
+ - NO Answer
+
 5. What strategies would you implement to secure the entire deployment process, including the VM, storage, and CI/CD pipeline?
+
+- No Answer
