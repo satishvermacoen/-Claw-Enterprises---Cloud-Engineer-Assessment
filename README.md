@@ -72,8 +72,6 @@ azcopy copy "/home/satish/html/index.html" "https://clawenterprisesstorage1.blob
 
 1. Fork the example repository [here](https://github.com/render-examples/flask-hello-world/tree/master).
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
 2. Deploy the code on the VM.
 - Install Required Dependencies
 Flask is a python-based application. So Python and other required dependencies must be installed on your server. If not installed you can install all of them with the following command:
@@ -146,6 +144,7 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ![App Screenshot](./task-4/Screenshot%20(6).png)
 ![App Screenshot](./task-4/Screenshot%20(7).png)
 ![App Screenshot](./task-4/Screenshot%20(8).png)
+- here i created .sh script file name "file.sh" and put all the commands in this file and excuted it.
 ![App Screenshot](./task-4/Screenshot%20(10).png)
 
 2. Create snapshot of the VM.
@@ -153,6 +152,7 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ![App Screenshot](./task-4/Screenshot%20(12).png)
 ![App Screenshot](./task-4/Screenshot%20(13).png)
 ![App Screenshot](./task-4/Screenshot%20(14).png)
+- Creating Virtual machince scale set and load balancer for application sacling and load balancing
 ![App Screenshot](./task-4/Screenshot%20(15).png)
 ![App Screenshot](./task-4/Screenshot%20(17).png)
 ![App Screenshot](./task-4/Screenshot%20(18).png)
@@ -183,6 +183,9 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ![App Screenshot](./task-4/Screenshot%20(41).png)
 ![App Screenshot](./task-4/Screenshot%20(42).png)
 ![App Screenshot](./task-4/Screenshot%20(44).png)
+- After resource deleting resource
+![App Screenshot](./task-4/Screenshot%20(45).png)
+
 
 
 
