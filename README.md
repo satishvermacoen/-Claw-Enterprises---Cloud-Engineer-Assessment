@@ -121,3 +121,181 @@ apt-get install python3-venv -y
 
 3. Create a system service to automatically start the application whenever the VM restarts.
 4. Configure NGINX as a reverse proxy for the Flask application.
+
+
+
+## Task 4.
+
+```bash
+#!/bin/bash
+# Use this for your user data (script from top to bottom)
+# install Apache (Ubuntu version)
+apt-get update -y
+apt-get install -y apache2
+systemctl start apache2
+systemctl enable apache2
+echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+```
+
+1. Create another VM named `hello world`and run the above script on it.
+- I create vm name "claw-vm-task4" and run the above script in it.
+![App Screenshot](./task-4/Screenshot%20(1).png)
+![App Screenshot](./task-4/Screenshot%20(3).png)
+![App Screenshot](./task-4/Screenshot%20(4).png)
+![App Screenshot](./task-4/Screenshot%20(5).png)
+![App Screenshot](./task-4/Screenshot%20(6).png)
+![App Screenshot](./task-4/Screenshot%20(7).png)
+![App Screenshot](./task-4/Screenshot%20(8).png)
+![App Screenshot](./task-4/Screenshot%20(10).png)
+
+2. Create snapshot of the VM.
+![App Screenshot](./task-4/Screenshot%20(11).png)
+![App Screenshot](./task-4/Screenshot%20(12).png)
+![App Screenshot](./task-4/Screenshot%20(13).png)
+![App Screenshot](./task-4/Screenshot%20(14).png)
+![App Screenshot](./task-4/Screenshot%20(15).png)
+![App Screenshot](./task-4/Screenshot%20(17).png)
+![App Screenshot](./task-4/Screenshot%20(18).png)
+![App Screenshot](./task-4/Screenshot%20(19).png)
+![App Screenshot](./task-4/Screenshot%20(20).png)
+![App Screenshot](./task-4/Screenshot%20(21).png)
+![App Screenshot](./task-4/Screenshot%20(22).png)
+![App Screenshot](./task-4/Screenshot%20(23).png)
+![App Screenshot](./task-4/Screenshot%20(24).png)
+![App Screenshot](./task-4/Screenshot%20(25).png)
+3. Create 2 more VMs `hello` & `world` from the created snapshot.
+![App Screenshot](./task-4/Screenshot%20(26).png)
+![App Screenshot](./task-4/Screenshot%20(27).png)
+![App Screenshot](./task-4/Screenshot%20(28).png)
+![App Screenshot](./task-4/Screenshot%20(29).png)
+![App Screenshot](./task-4/Screenshot%20(30).png)
+![App Screenshot](./task-4/Screenshot%20(31).png)
+![App Screenshot](./task-4/Screenshot%20(32).png)
+4. Configure Load balancer and Scaling group.
+![App Screenshot](./task-4/Screenshot%20(33).png)
+![App Screenshot](./task-4/Screenshot%20(34).png)
+![App Screenshot](./task-4/Screenshot%20(35).png)
+![App Screenshot](./task-4/Screenshot%20(36).png)
+![App Screenshot](./task-4/Screenshot%20(37).png)
+![App Screenshot](./task-4/Screenshot%20(38).png)
+![App Screenshot](./task-4/Screenshot%20(39).png)
+![App Screenshot](./task-4/Screenshot%20(40).png)
+![App Screenshot](./task-4/Screenshot%20(41).png)
+![App Screenshot](./task-4/Screenshot%20(42).png)
+![App Screenshot](./task-4/Screenshot%20(44).png)
+
+
+
+
+
+
+
+
+### Answer the below questions.
+
+1. What are the steps to set up a VNet, Ubuntu VM in Azure, and configure inbound ports for HTTP and HTTPS access, including IP restrictions?
+
+Ans:
+
+Setting up a VNet, Ubuntu VM in Azure, and configuring inbound ports for HTTP and HTTPS access with IP restrictions involves several steps. Here’s a detailed guide:
+
+### Step 1: Create a Virtual Network (VNet)
+
+1. **Navigate to the Azure Portal**:
+   - Open [Azure Portal](https://portal.azure.com).
+
+2. **Create a VNet**:
+   - Go to "Create a resource" > "Networking" > "Virtual Network".
+   - Enter the necessary details:
+     - **Name**: Give your VNet a name.
+     - **Region**: Choose the region where you want to deploy your VNet.
+     - **Address Space**: Define the address range (e.g., 10.0.0.0/16).
+     - **Subnet**: Add a subnet (e.g., 10.0.1.0/24).
+
+3. **Review and Create**:
+   - Review your configuration and click "Create".
+
+### Step 2: Create an Ubuntu Virtual Machine (VM)
+
+1. **Navigate to the Azure Portal**:
+   - Open [Azure Portal](https://portal.azure.com).
+
+2. **Create a VM**:
+   - Go to "Create a resource" > "Compute" > "Virtual Machine".
+   - Enter the necessary details:
+     - **Subscription**: Select your subscription.
+     - **Resource group**: Create a new resource group or use an existing one.
+     - **Name**: Give your VM a name.
+     - **Region**: Choose the region (same as VNet region).
+     - **Image**: Select "Ubuntu Server".
+     - **Size**: Choose the size based on your requirements.
+
+3. **Administrator Account**:
+   - Choose authentication type (SSH public key or password).
+   - Enter a username and authentication details.
+
+4. **Networking**:
+   - Under "Networking", select the VNet and subnet you created earlier.
+   - Make sure to assign a public IP if you want the VM to be accessible from the internet.
+
+5. **Review and Create**:
+   - Review your configuration and click "Create".
+
+### Step 3: Configure Network Security Group (NSG) for Inbound Ports
+
+1. **Navigate to the NSG**:
+   - Go to "Virtual Machines" > Select your VM > "Networking".
+   - Click on the Network Security Group (NSG) linked to your VM's network interface.
+
+2. **Add Inbound Security Rules**:
+   - Click on "Inbound security rules" > "Add".
+   - Create a rule for HTTP (port 80):
+     - **Source**: Any or IP Addresses (for specific IP restrictions).
+     - **Source IP addresses/CIDR ranges**: Specify IP ranges if restricting access.
+     - **Destination**: Any.
+     - **Service**: HTTP.
+     - **Action**: Allow.
+     - **Priority**: Assign a priority (e.g., 100).
+     - **Name**: Name your rule (e.g., allow-http).
+   - Create a rule for HTTPS (port 443):
+     - Repeat the above steps but select HTTPS as the service.
+
+### Step 4: Configure IP Restrictions
+
+1. **Modify Inbound Security Rules for IP Restrictions**:
+   - For each rule (HTTP and HTTPS):
+     - **Source**: Change to "IP Addresses".
+     - **Source IP addresses/CIDR ranges**: Enter the specific IP ranges allowed to access your VM.
+
+2. **Save Rules**:
+   - Save the rules after configuring the IP restrictions.
+
+### Step 5: Verify Configuration
+
+1. **SSH into the VM**:
+   - Use the public IP address and your SSH key or password to connect to the VM.
+
+2. **Install Web Server (Optional)**:
+   - For testing, install Apache or Nginx.
+     ```sh
+     sudo apt update
+     sudo apt install apache2 -y   # for Apache
+     sudo apt install nginx -y     # for Nginx
+     ```
+
+3. **Access VM via Browser**:
+   - Open a web browser and navigate to `http://<public-ip>` or `https://<public-ip>`.
+   - Ensure the page loads correctly, verifying that HTTP and HTTPS access are configured.
+
+### Summary
+
+By following these steps, you can set up a VNet, create an Ubuntu VM in Azure, and configure the necessary inbound ports for HTTP and HTTPS access, including IP restrictions to enhance security.
+
+
+2. How do you configure an Azure storage account, set up an Azure File Share, and mount it on an Ubuntu VM using SSH?
+
+Ans: 
+
+3. Explain the process of using Terraform to automate the setup of Azure resources. What are the benefits and key considerations?
+4. Describe how to create a GitHub workflow to automate deployment from GitHub to an Azure VM. What are the key considerations to ensure it functions correctly and securely?
+5. What strategies would you implement to secure the entire deployment process, including the VM, storage, and CI/CD pipeline?
