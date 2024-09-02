@@ -127,7 +127,11 @@ apt-get install python3-venv -y
 final oon 18-7-2024 i delete my last VM.
 ![App Screenshot](./task-3/Screenshot%20(51).png) 
  for screenshot [click](./task-3)
-
+--------------------
+I try one more time and this is result and also build the pipeline.
+![App Screenshot](./task-3/Screenshot%20(37).png)
+![App Screenshot](./task-3/Screenshot%20(14).png)
+--------------------
 ## Task 4.
 
 ```bash
@@ -195,10 +199,47 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ## Task 5.
 
 ### CI/CD Pipeline and GitHub Actions
-#### As I work on task-3 is not completed so i am unable to work on task-5 
-- Reason: To build the github workflow and pipeline, I required the the steps, command and application should be in running state. 
+#### As task-3 is completed and the pipeline of this process on task-5 
+This is complete pipeline github Action.
+and the secert are saved in the form of variable.
 
+```yaml
+name: Deploy to VM
 
+on:
+  push:
+    branches:
+      - master  # or the branch you want to trigger the workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install sshpass
+      run: sudo apt-get update && sudo apt-get install -y sshpass
+
+    - name: Connect to VM and run commands
+      run: |
+        sshpass -p ${{ secrets.VM_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
+          echo "Logged into the VM successfully."
+          sudo apt update 
+          cd /home/satish/app/flask-hello-world
+          git pull
+          sudo systemctl stop flaskapp.service
+          sudo systemctl start flaskapp.service
+          sudo systemctl restart nginx
+          
+        EOF
+```
+![App Screenshot](./task-5/Screenshot%20(15).png)
+![App Screenshot](./task-5/Screenshot%20(17).png)
+![App Screenshot](./task-5/Screenshot%20(18).png)
+![App Screenshot](./task-5/Screenshot%20(19).png)
+![App Screenshot](./task-5/Screenshot%20(20).png)
 
 
 ## Task-6
